@@ -12,9 +12,14 @@ class Prices(Model):
             database = db
 
 def create_db():
-
     db.connect()
     db.create_tables([Prices])
+    db.close()
 
-if __name__ == "__main__":
-    create_db()
+def get_last_price():
+    prices = Prices.select().order_by(Prices.id.desc())
+    last_price = prices.get().__dict__.get("__data__")
+
+    return last_price
+
+create_db()
